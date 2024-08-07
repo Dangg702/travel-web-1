@@ -1,0 +1,103 @@
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">All Booking</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard">dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">bookings</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Bookings Table</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="form-check form-check-muted m-0">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" />
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th>Booking ID</th>
+                                    <th>Người đặt</th>
+                                    <th>Số người</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Phương thức thanh toán</th>
+                                    <th>Thanh toán</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày đặt</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% bookings.forEach((booking, index) => { %>
+                                <tr>
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td><%= booking._id %></td>
+                                    <td><%= booking.contactInfo.name %></td>
+                                    <td><%= booking.numOfPeople %></td>
+                                    <td><%= booking.totalPrice %></td>
+                                    <td style="text-align: center;"><%= booking.paymentMethod %></th>
+                                    <td><%= booking.isPaid %></th>
+                                    <td><%= booking.status %></td>
+                                    <td><%= booking.updatedAt.toLocaleDateString() %></td>
+                                    <td>
+                                        <!-- <a
+                                            href="https://travel-web-ks0z.onrender.com/"
+                                            class="btn btn-outline-primary"
+                                            >Edit</a
+                                        > -->
+                                        <a
+                                            href="javascript:void(0);"
+                                            class="btn btn-outline-danger delete-booking"
+                                            data-booking-id="<%= booking._id %>"
+                                            >Delete</a
+                                        >
+                                    </td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-booking');
+        deleteButtons.forEach((button) => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const bookingId = this.getAttribute('data-booking-id');
+                fetch(`https://travel-web-ks0z.onrender.com/booking/delete/${bookingId}`, {
+                    method: 'DELETE',
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Failed to delete booking' + bookingId);
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        console.log(data.message);
+                        alert(data.message);
+                        window.location.reload();
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+    });
+</script>

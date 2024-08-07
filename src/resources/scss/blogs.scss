@@ -1,0 +1,40 @@
+@import 'variables';
+div, a, span, p {
+    font-size: 1.8rem;
+    line-height: 1.6;
+}
+.card {
+    border: none;
+}
+.news__list__item.card {
+    border-top: .5px solid #7d8fab;
+    border-radius: 5px;
+}
+.news__list__item__image-wrapper {
+    border-radius: 10px;
+    overflow: hidden;
+    padding-top: 58.19672131%;
+    position: relative;
+    img {
+        border-radius: 10px;
+        bottom: auto;
+        height: 100%;
+        left: 50%;
+        position: absolute;
+        right: auto;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        transition: all .2s ease;
+        width: 100%;
+    }
+}
+.cut-name {
+    font-size: 3rem;
+    line-height: 1.2;
+    color: $green-color;
+}
+.news__new-thread__category {
+    color: #e01600;
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,235 @@
+<div class="page-title" style="background: no-repeat center/100% url('<%= tour.placeData.img %>')">
+    <div class="background-desc"><%= tour.name %></div>
+</div>
+<div class="container mt-5 main-content" style="padding: 0 80px">
+    <div class="mb-4 tour-detail">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="info-tour mb-5">
+                    <div class="row-info">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <span class="text-uppercase">Thời gian:</span>
+                                <span class="fw-bold"><%= tour.duration %></span>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <span class="text-uppercase">Phương tiện:</span>
+                                <span class="fw-bold"><%= tour.vehicle %> </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <span class="text-uppercase">Điểm xuất phát:</span>
+                                <span class="fw-bold"><%= tour.departure %></span>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <span class="text-uppercase">Điểm đến:</span>
+                                <span class="fw-bold"><%= tour.destination %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-tour-detail">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 tour-detail-title-information tour-detail-header-col">
+                            <div class="row">
+                                <div class="col-md 2 col-xs-12">Khởi hành</div>
+                                <div class="col-md 2 col-xs-12">Ngày về</div>
+                                <div class="col-md 2 col-xs-12">Mã Tour</div>
+                                <div class="col-md 2 col-xs-12">Thời gian</div>
+                                <div class="col-md 2 col-xs-12">Giá</div>
+                                <div class="col-md 2 col-xs-12">Đặt/Mua tour</div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 tour-detail-content-col">
+                            <div class="list-inline">
+                                <div class="row">
+                                    <div class="col-md 2 col-xs-12">
+                                        <strong><%= tour.dateGo %></strong>
+                                    </div>
+                                    <div class="col-md 2 col-xs-12">
+                                        <strong><%= tour.dateBack %></strong>
+                                    </div>
+                                    <div class="col-md 2 col-xs-12">
+                                        <strong style="margin-left: -30px"><%= tour._id %></strong>
+                                    </div>
+                                    <div class="col-md 2 col-xs-12">
+                                        <strong><%= tour.duration %></strong>
+                                    </div>
+                                    <div class="col-md 2 col-xs-12 price">
+                                        <strong><%= tour.price %></strong>
+                                    </div>
+                                    <div class="col-md 2 col-xs-12 packageInfo">
+                                        <div class="action-book">
+                                            <a class="btn btn-buy-tour" href="/booking/booking-form/<%= tour.id %>">
+                                                Mua
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-description">
+                    <div class="title-description">Tour này có gì hay</div>
+                    <div class="content-description"><%= tour.desc %></div>
+                </div>
+                <div class="row-info-tour">
+                    <div class="title-description">Chương trình tour</div>
+                    <div class="content-description">
+                        <div>
+                            <p class="sub-title">Điểm đón</p>
+                            <p><%= tour.departure %></p>
+                        </div>
+                        <div class="schedule" data-schedule="<%= tour.scheduleHtml %>"></div>
+                    </div>
+                </div>
+                <div class="row-rating tour-review">
+                    <div class="title-description">Đánh giá khách hàng về Tour <%= tour.name %></div>
+                    <div class="col-xs-12 mt-5 mb-5">
+                        <% if (user != null) { %>
+                        <form id="reviewForm" userId-data="<%= user._id %>">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-xs-12 col-md-3 col-lg-2">
+                                    <div class="row">
+                                        <div class="col-xs-12 customerReviewName">
+                                            <img
+                                                width="50px"
+                                                height="50px"
+                                                class="review-user-avatar"
+                                                src="<%= user.avatar %>"
+                                                alt="avatar"
+                                            />
+                                            <span class="review-user-name"><%= user.username %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-2 col-lg-1">
+                                    <div class="row">
+                                        <div class="col-xs-12 customerReviewName">
+                                            <select class="form-select" id="rating" name="rating" required>
+                                                <option value="1">1 sao</option>
+                                                <option value="2">2 sao</option>
+                                                <option value="3">3 sao</option>
+                                                <option value="4">4 sao</option>
+                                                <option value="5" selected>5 sao</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-4 col-lg-7">
+                                    <div class="row">
+                                        <div class="col-xs-12 customerReviewName">
+                                            <textarea
+                                                class="form-control comment"
+                                                id="comment"
+                                                name="comment"
+                                                rows="1"
+                                                placeholder="Viết đánh giá của bạn..."
+                                                required
+                                            ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-3 col-lg-2">
+                                    <div class="row">
+                                        <div class="col-xs-12 customerReviewName">
+                                            <button
+                                                type="button"
+                                                onclick="submitReview()"
+                                                class="btn btn-lg btn-outline-primary"
+                                            >
+                                                Gửi đánh giá
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <% } %>
+                    </div>
+                    <div class="col-xs-12 mt-3 mb-3 review-detail-container">
+                        <span class="recentReviews">
+                            Đánh giá gần đây <% if (reviews ) { %>
+                            <span class="fst-italic fw-light">(<%= reviews.length %> đánh giá)</span>
+                            <% } %>
+                        </span>
+
+                        <% if (limitReviews) { %> <% limitReviews.forEach(review => { %> <% const user = review.userId;
+                        %> <% tour = review.tourId %>
+                        <div class="horizontalLine"></div>
+                        <div class="review-detail pt-4 pb-4">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
+                                    <div class="row">
+                                        <div class="col-xs-12 vspacing3 customerReviewName">
+                                            <img width="50px" height="50px" src="<%= user.avatar %>" alt="avatar" />
+                                            <span><%= user.username %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
+                                    <div class="row">
+                                        <div class="col-xs-12 mb-3">
+                                            <span class="scoreSpan"><%= review.rating %></span>
+                                            <span class="scoreReviewDate"><%= review.updatedAt %></span>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <span class="customerReviewContent"> <%= review.comment %> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                        <div class="mt-3 mb-3 d-flex justify-content-center">
+                            <button
+                                class="btn btn-lg btn-outline-primary more-reviews"
+                                data-reviews="<%= JSON.stringify(reviews) %>"
+                                onclick="handleReviews()"
+                            >
+                                Xem tất cả
+                            </button>
+                        </div>
+                        <% } else { %>
+                        <div class="col-xs-12">
+                            <p>Không có đánh giá nào cho tour này.</p>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const schedule = document.querySelector('.schedule');
+    const scheduleHtmlString = schedule.getAttribute('data-schedule');
+    schedule.innerHTML = scheduleHtmlString;
+
+    const form = document.getElementById('reviewForm');
+    function submitReview() {
+        const rating = parseInt(form.rating.value);
+        const comment = form.comment.value;
+        const tourId = '<%= tour._id %>';
+        const userId = form.getAttribute('userId-data');
+        if (!comment) {
+            alert('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
+        fetch('/api/review/add-review', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                rating,
+                comment,
+                tourId,
+                userId,
+            }),
+        });
+        location.reload();
+    }
+</script>

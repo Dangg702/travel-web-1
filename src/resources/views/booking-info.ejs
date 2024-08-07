@@ -1,0 +1,124 @@
+<div style="padding: 10px 100px">
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active fs-2" aria-current="page" href="#trips">Chuyến đi đã đặt</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="trips" data-bookings="<%= bookings %>">
+                <div class="trip-wrapper" id="trip-wrapper">
+                    <% if (bookings.length === 0) { %>
+                    <div class="empty-item-wrap pt-5">
+                        <img src="/img/emptytrip.png" alt="empty trip" />
+                        <p style="font-size: 2rem; font-weight: 600; text-align: center">
+                            Hiện tại chưa có đơn hàng nào
+                        </p>
+                    </div>
+                    <% } else { %> <% bookings.forEach(booking => { %>
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4 p-5">
+                                <h5 class="card-title">Tour <%= booking.tourId.name %></h5>
+                                <p class="tour-status"><strong>Trạng thái:</strong> <%= booking.status %></p>
+                                <% if (booking.status !== 'cancelled' && booking.status !== 'success') { %>
+                                <div>
+                                    <button
+                                        class="btn btn-danger btn-cancel-tour"
+                                        onclick="handleCancel('<%- booking._id %>', '<%- booking.totalPrice %>')"
+                                    >
+                                        Hủy
+                                    </button>
+                                    <a
+                                        class="btn btn-danger btn-payment-tour"
+                                        style="font-size: 1.6rem; border-radius: 4px; text-transform: uppercase"
+                                        onclick="handlePaymentRedirect('<%- booking._id %>', '<%- booking.totalPrice %>', '<%- booking.userId %>')"
+                                    >
+                                        Thanh toán
+                                    </a>
+                                </div>
+                                <% } %>
+                            </div>
+                            <div class="col-md-8 p-5">
+                                <div class="card-body booking-item-body">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <p class="card-text"><strong>Code:</strong> <%= booking.tourId._id %></p>
+                                            <p class="card-text">
+                                                <strong>Số lượng:</strong> <%= booking.numOfPeople %>
+                                            </p>
+                                            <p class="card-text"><strong>Giá:</strong> <%= booking.totalPrice %></p>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
+                                            <p class="card-text">
+                                                <strong>Thời gian:</strong> <%= booking.tourId.duration %>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>Ngày đi:</strong> <%= booking.tourId.dateGo %>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>Ngày về:</strong> <%= booking.tourId.dateBack %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %> <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const moment = require('moment');
+
+    function handlePaymentRedirect(bookingId, totalPrice) {
+        const btnsRedirect = document.querySelectorAll('.btn-payment-tour');
+        const amount = totalPrice.replace(/,/g, '');
+        btnsRedirect.forEach((btn) => {
+            btn.href = `https://travel-web-ks0z.onrender.com/api/payment/create_payment_url?orderId=${bookingId}&amount=${amount}`;
+        });
+    }
+    function handleCancel(bookingId, totalPrice, userId) {
+        const btnsCancel = document.querySelectorAll('.btn-cancel-tour');
+        btnsCancel.forEach((btn) => {
+            if (confirm('Bạn có chắc chắn muốn hủy tour?')) {
+                fetch(`/booking/update/${bookingId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status: 'cancelled',
+                    }),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data.status == 'ok') {
+                            alert('Hủy tour thành công');
+                            location.reload();
+                        } else {
+                            alert('Hủy tour thất bại');
+                        }
+                    });
+                fetch(`https://travel-web-ks0z.onrender.com/api/payment/refund`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        orderId: bookingId,
+                        amount: totalPrice,
+                        transType: '02',
+                        transDate: moment(new Date()).format('YYYYMMDDHHmmss'),
+                        user: userId,
+                    }),
+                }).then((res) => res.json());
+            }
+        });
+    }
+</script>

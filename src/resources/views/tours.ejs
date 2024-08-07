@@ -1,0 +1,50 @@
+<h1 class="text-uppercase fw-bold">Tours du lịch <%= tourTitle %></h1>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mt-5 tour-list">
+    <% if (tours != '') { %> <% tours.forEach(tour => { %>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-5 tour-item">
+        <div class="row g-3">
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 tour-item__image">
+                <a href="https://travel-web-ks0z.onrender.com/api/tour/get-tour/<%= tour._id %>">
+                    <img src="<%= tour.placeData.img %>" class="img-fluid" alt="<%= tour.name %>" />
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 tour-item__content">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 ps-4 pe-0">
+                        <h5 class="tour-item__content-title m-0">
+                            <a
+                                href="https://travel-web-ks0z.onrender.com/api/tour/get-tour/<%= tour._id %>"
+                                title="<%= tour.name %>"
+                                ><%= tour.name %></a
+                            >
+                        </h5>
+                        <p class="tour-item__content-destination">TPHCM - <%= tour.destination %></p>
+                        <div class="tour-item__content-detail">
+                            <p class="tour-item__content-duration">Thời gian: <%= tour.duration %></p>
+                            <p class="tour-item__content-transport">Phương tiện: <%= tour.vehicle %></p>
+                            <p class="tour-item__content-description"><%= tour.desc %></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <span class="tour-item__content-dateGo">Khởi hành: <%= tour.dateGo %></span><br />
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <a
+                                    href="https://travel-web-ks0z.onrender.com/booking/booking-form/<%= tour._id %>"
+                                    class="btn w-100 tour-item__content-price"
+                                >
+                                    <%= tour.price%>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }) %> <% } else { %>
+    <h2 class="message">Không tìm thấy</h2>
+    <% } %>
+</div>

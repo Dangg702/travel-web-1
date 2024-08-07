@@ -1,0 +1,128 @@
+<div class="page-header">
+    <h3 class="page-title">Edit Place</h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">Edit Place</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="col-12" id="alert-container"></div>
+<!-- Thay thế div bằng span -->
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Edit Place</h4>
+                <p class="card-description"></p>
+                <form
+                    action="https://travel-web-ks0z.onrender.com/api/place/edit-place/<%= place._id%>"
+                    method="POST"
+                >
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="name<%= place._id %>"
+                            name="name"
+                            value="<%= place.name %>"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="desc">Description:</label>
+                        <textarea class="form-control" id="desc<%= place._id %>" name="desc" rows="4"><%= place.desc %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="isFamous">Is Famous:</label>
+                        <% if (place.isFamous) { %>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="isFamous" value="true" checked>
+                                <label class="form-check-label" for="isFamous">
+                                  True
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="isFamous" value="false">
+                                <label class="form-check-label" for="isFamous">
+                                  False
+                                </label>
+                            </div>
+                        <% } else { %>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="isFamous" value="true" >
+                                <label class="form-check-label" for="isFamous">
+                                  True
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="isFamous" value="false" checked>
+                                <label class="form-check-label" for="isFamous">
+                                  False
+                                </label>
+                            </div>
+                        <% } %>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label for="region">Region:</label>
+                        <select class="form-control" id="region<%= place._id %>" name="region">
+                            <option value="none" selected disabled hidden><%= place.region%></option>
+                            <option value="miền bắc" <%= place.region === "miền bắc" ? 'selected' : '' %>>Bắc Bộ</option>
+                            <option value="miền trung" <%= place.region === "miền trung" ? 'selected' : '' %>>Trung Bộ</option>
+                            <option value="miền nam" <%= place.region === "miền nam" ? 'selected' : '' %>>Nam Bộ</option>
+                        </select>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary" onclick="updatePlace('<%= place._id %>')">
+                        Update
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function updatePlace(placeId) {
+        const name = document.getElementById('name' + placeId).value;
+        const desc = document.getElementById('desc' + placeId).value;
+        const region = document.getElementById('region' + placeId).value;
+        const isFamous = document.querySelector('input[name="isFamous"]:checked').value;
+
+        try {
+            const response = await fetch('/api/place/edit-place/' + placeId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, desc, region, isFamous }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                // Hiển thị thông báo thành công
+                const alertContainer = document.getElementById('alert-container');
+                alertContainer.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> Place updated successfully.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            } else {
+                // Hiển thị thông báo lỗi
+                const alertContainer = document.getElementById('alert-container');
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> Failed to update place. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+</script>

@@ -1,0 +1,128 @@
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">Create Form</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard">dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">create tour</li>
+            </ol>
+        </nav>
+    </div>
+    <div classs="col-12" id="alert-container"></div>
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Tour</h4>
+                    <form
+                        class="upload-form"
+                        id="upload-form"
+                        action="https://travel-web-ks0z.onrender.com/api/tour/add-tour"
+                        method="post"
+                    >
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="placeData">Place ID</label>
+                            <input type="text" class="form-control" id="placeData" name="placeData" />
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Duration</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="duration"
+                                name="duration"
+                                placeholder="3 ngày 2 đêm"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="dateGo">Date go</label>
+                            <input type="text" class="form-control" id="dateGo" name="dateGo" placeholder="24/3/2024" />
+                        </div>
+                        <div class="form-group">
+                            <label for="dateBack">Date back</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="dateBack"
+                                name="dateBack"
+                                placeholder="27/3/2024"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="desc">Description</label>
+                            <textarea class="form-control" id="desc" name="desc" required rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input type="text" class="form-control" id="price" name="price" placeholder="2,300,000" />
+                        </div>
+                        <div class="form-group">
+                            <label for="departure">Departure</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="departure"
+                                name="departure"
+                                placeholder="Hồ Chí Minh"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="destination">Destination</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="destination"
+                                name="destination"
+                                placeholder="Hà Nội"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle">Vehicle</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="vehicle"
+                                name="vehicle"
+                                placeholder="xe khách"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select class="form-control" id="type" name="type">
+                                <option value="none" selected disabled hidden>--- Select an Option ---</option>
+                                <option value="trọn gói">Trọn gói</option>
+                                <option value="daily">Daily tour</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleHtml">Schedule</label>
+                            <textarea
+                                name="scheduleHtml"
+                                id="scheduleHtml"
+                                cols="30"
+                                rows="10"
+                                placeholder="This is Schedule content"
+                            >
+                            </textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('scheduleHtml', {
+        extraPlugins: 'filebrowser',
+        filebrowserBrowseUrl: '/list', //upload location
+        filebrowserUploadMethod: 'form',
+        filebrowserUploadUrl: '/api/tour/upload', //route
+        removePlugins: 'exportpdf',
+    });
+</script>

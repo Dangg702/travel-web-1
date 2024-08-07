@@ -1,0 +1,125 @@
+<!-- Overlay -->
+<section id="overlay"></section>
+<!-- Header -->
+<header class="container">
+    <div class="wrapper">
+        <nav class="navbar">
+            <!-- Logo -->
+            <div class="navbar__logo">
+                <a href="https://travel-web-ks0z.onrender.com/"><img src="/img/logo.svg" alt="logo" /></a>
+            </div>
+            <!-- Links -->
+            <ul class="navbar-nav navbar__links">
+                <li class="nav-item navbar__link"><a href="https://travel-web-ks0z.onrender.com/">Trang chủ</a></li>
+                <li class="nav-item navbar__link dropdown">
+                    <a class="nav-link" href="#" data-bs-toggle="dropdown">Tours</a>
+                    <ul class="dropdown-menu navbar__menu" aria-labelledby="accountDropdown">
+                        <li>
+                            <a class="dropdown-item" href="https://travel-web-ks0z.onrender.com/api/tour/miền bắc"
+                                >Tours miền Bắc</a
+                            >
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://travel-web-ks0z.onrender.com/api/tour/miền trung"
+                                >Tours miền Trung</a
+                            >
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://travel-web-ks0z.onrender.com/api/tour/miền nam"
+                                >Tours miền Nam</a
+                            >
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="https://travel-web-ks0z.onrender.com/api/tour/latest-tours"
+                                >Tours mới nhất</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="https://travel-web-ks0z.onrender.com/api/tour/tours-type/trọn gói"
+                                >Tours trọn gói</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="https://travel-web-ks0z.onrender.com/api/tour/tours-type/daily"
+                                >Tours trong ngày</a
+                            >
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item navbar__link"><a href="/blogs">Blogs</a></li>
+                <li class="nav-item navbar__link"><a href="/contact">Liên hệ</a></li>
+                <li class="nav-item navbar__link dropdown" id="accountBtn">
+                    <% if (user !== null) { %>
+                    <a class="nav-link" href="/user/login" id="accountDropdown" data-bs-toggle="dropdown">
+                        <img
+                            src="<%= user.avatar %>"
+                            alt="<%= user.avatar %>"
+                            style="width: 50px; height: 48px; border-radius: 50%"
+                        />
+                    </a>
+                    <ul class="dropdown-menu navbar__menu" aria-labelledby="accountDropdown">
+                        <% if (user.isAdmin) { %>
+                        <li>
+                            <a class="dropdown-item" href="https://travel-web-ks0z.onrender.com/dashboard"
+                                >Dashboard page</a
+                            >
+                        </li>
+                        <% } else { %>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="https://travel-web-ks0z.onrender.com/user/account/<%= user._id %>/booking-info"
+                                >Thông tin đơn hàng</a
+                            >
+                        </li>
+                        <% } %>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                href="https://travel-web-ks0z.onrender.com/user/account/<%= user._id %>"
+                                >Tài khoản</a
+                            >
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                            <a class="dropdown-item" href="https://travel-web-ks0z.onrender.com/user/logout"
+                                >Đăng xuất</a
+                            >
+                        </li>
+                    </ul>
+                    <% } else { %>
+                    <a class="nav-link" href="/user/login">
+                        <button class="navbar__btn">Tài khoản</button>
+                    </a>
+                    <% } %>
+                </li>
+            </ul>
+            <!-- Icon -->
+            <div class="navbar__ham">
+                <div class="navbar__icon"></div>
+            </div>
+        </nav>
+    </div>
+</header>
+<script>
+    const menu = document.querySelector('.navbar__links');
+    const menuIcon = document.querySelector('.navbar__icon');
+    const menuBtn = document.querySelector('.navbar__ham');
+    const overlay = document.querySelector('#overlay');
+
+    menuBtn.addEventListener('click', () => {
+        menuIcon.classList.toggle('open');
+        menu.classList.toggle('navbar__open');
+        overlay.classList.toggle('show');
+    });
+    overlay.addEventListener('click', () => {
+        overlay.classList.toggle('show');
+        menuIcon.classList.toggle('open');
+        menu.classList.toggle('navbar__open');
+    });
+</script>

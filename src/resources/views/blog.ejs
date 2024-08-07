@@ -1,0 +1,24 @@
+<div class="container mt-5 main-content" style="padding: 0 80px">
+    <div class="mb-4 tour-detail">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="row-description">
+                    <div class="title-description">
+                        <h1 style="font-size: 4rem; font-weight: bold"><%= blog.title %></h1>
+                    </div>
+                    <div class="content-description"><h2 style="font-style: italic"><%= blog.desc %></h2></div>
+                    <br />
+                    <div class="row-info-tour">
+                        <div class="content" data-content="<%= blog.contentHtml %>"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const content = document.querySelector('.content');
+    const contentHtml = content.getAttribute('data-content');
+    content.innerHTML = contentHtml;
+</script>

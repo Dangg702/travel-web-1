@@ -1,0 +1,117 @@
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">Create Form</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard">dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">create form</li>
+            </ol>
+        </nav>
+    </div>
+    <div classs="col-12" id="alert-container"></div>
+    <!-- Thay thế div bằng span -->
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Place</h4>
+                    <p class="card-description">Add place</p>
+                    <form class="upload-form" id="upload-form">
+                        <div class="form-group">
+                            <label for="exampleInputName1">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleTextarea1">Description</label>
+                            <textarea class="form-control" id="desc" name="desc" required rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleSelectGender">Region</label>
+                            <select class="form-control" id="region" name="region">
+                                <option value="none" selected disabled hidden>--- Select an Option ---</option>
+                                <option value="miền bắc">Bắc Bộ</option>
+                                <option value="miền trung">Trung Bộ</option>
+                                <option value="miền nam">Nam Bộ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Is Famous</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="isFamous" name="isFamous" checked />
+                                <label class="form-check-label" for="flexRadioDefault1"> No </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="isFamous" name="isFamous" />
+                                <label class="form-check-label" for="flexRadioDefault2"> Yes </label>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3 custom-file-button">
+                            <label class="input-group-text" for="inputGroupFile">Upload Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*" required />
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="uploadAndAddPlace()">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    async function uploadAndAddPlace() {
+        // Lấy thông tin từ biểu mẫu
+        const name = document.getElementById('name').value;
+        const desc = document.getElementById('desc').value;
+        const image = document.getElementById('image').files[0];
+        const isFamous = document.getElementById('isFamous').checked;
+        const region = document.getElementById('region').value;
+
+        // Tạo FormData để gửi dữ liệu đến server
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('desc', desc);
+        formData.append('image', image);
+        formData.append('isFamous', isFamous);
+        formData.append('region', region);
+
+        try {
+            // Gửi ảnh lên Cloudinary
+            const cloudinaryResponse = await fetch('/api/up/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const cloudinaryData = await cloudinaryResponse.json();
+
+            // Gửi dữ liệu địa điểm lên server
+            const placeResponse = await fetch('/api/place/add-place', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    desc: desc,
+                    img: cloudinaryData.url, // URL của ảnh từ Cloudinary
+                    isFamous: isFamous,
+                    region: region,
+                }),
+            });
+            // console.log('placeResponse', placeResponse);
+            // const placeData = await placeResponse.json();
+            const alertContainer = document.getElementById('alert-container');
+            if (placeResponse.status !== 200) {
+                alertContainer.innerText = `Error! Failed to create place. Please try again.`;
+            } else {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> Place created successfully.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <button class="btn btn-primary" onclick="window.location.href='/dashboard'">Back to Dashboard</button>
+                    <button class="btn btn-secondary" onclick="window.location.reload()">Continue Adding</button>
+                `;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+</script>

@@ -1,0 +1,48 @@
+.user-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; }
+  .user-profile img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    margin-bottom: 20px; }
+  .user-profile .text-upload {
+    line-height: 1.5;
+    margin-bottom: 0; }
+    .user-profile .text-upload a {
+      font-size: 2rem;
+      color: #035755;
+      font-weight: 600;
+      text-align: center; }
+
+.user-dashboard label,
+.user-dashboard input {
+  font-size: 1.8rem; }
+
+.user-dashboard input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 14px;
+  border: 1px solid #035755;
+  border-radius: 5px; }
+  .user-dashboard input:focus {
+    box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.2);
+    border-color: #035755; }
+
+.user-dashboard .btn-change {
+  padding: 10px;
+  font-size: 1.8rem;
+  border: 1px solid #035755;
+  border-radius: 5px;
+  margin-bottom: 14px; }
+
+#confirmChangeAvatar {
+  margin-bottom: 20px; }
+  #confirmChangeAvatar .btn-custom {
+    width: 70px;
+    height: 34px;
+    font-size: 1.6rem;
+    margin-right: 40px;
+    box-shadow: none; }

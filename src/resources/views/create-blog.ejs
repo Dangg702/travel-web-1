@@ -1,0 +1,102 @@
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">Create Blog</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard">dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">create blog</li>
+            </ol>
+        </nav>
+    </div>
+    <div classs="col-12" id="alert-container"></div>
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Create Blog</h4>
+                    <form class="create-blog-form" id="create-blog-form" action="" method="post">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="title"
+                                name="title"
+                                placeholder="Top 5 điểm du lịch nghỉ dưỡng miền Bắc"
+                            />
+                        </div>
+                        <div class="input-group mb-3 custom-file-button">
+                            <label class="input-group-text" for="imgUrl">Upload Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="description">description</label>
+                            <textarea
+                                class="form-control"
+                                id="description"
+                                name="description"
+                                required
+                                rows="4"
+                            ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="contentHtml">Content</label>
+                            <textarea
+                                name="contentHtml"
+                                id="contentHtml"
+                                cols="30"
+                                rows="10"
+                                placeholder="This is Blog content"
+                            >
+                            </textarea>
+                        </div>
+                        <button type="button" onclick="uploadAndCreateBlog()" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('contentHtml');
+
+    async function uploadAndCreateBlog() {
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const image = document.getElementById('image').files[0];
+        const contentHtml = document.getElementById('contentHtml').value;
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('desc', description);
+        formData.append('image', image);
+        formData.append('contentHtml', contentHtml);
+
+        try {
+            // Gửi hình ảnh lên Cloudinary và lấy URL của ảnh từ Cloudinary
+            const cloudinaryResponse = await fetch('/api/up/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const cloudinaryData = await cloudinaryResponse.json();
+
+            const blogResponse = await fetch('/blogs/create-blog', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: title,
+                    desc: description,
+                    imgUrl: cloudinaryData.url, // Mảng URL của ảnh từ Cloudinary
+                    contentHtml: contentHtml,
+                }),
+            });
+
+            const alertContainer = document.getElementById('alert-container');
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+</script>

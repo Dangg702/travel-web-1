@@ -1,0 +1,300 @@
+<div class="page-title" style="background: no-repeat center/100% url('/img/banner2.jpg'); height: 300px">
+    <div class="background-desc">Đặt tour</div>
+</div>
+<div class="container ps-5 pe-5 mt-5 main-content">
+    <div class="row">
+        <div class="col-md-8 col-sm-12 col-xs-12">
+            <div class="payment-wrap bookingForm">
+                <form method="post" class="form" id="info-form">
+                    <div>
+                        <div class="title">
+                            <h3>SỐ LƯỢNG HÀNH KHÁCH</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5 col-xs-12 no-padding">
+                                <div class="form-group">
+                                    <label>Người lớn (*)</label>
+                                    <input
+                                        type="number"
+                                        name="numOfPeople"
+                                        id="numOfPeople"
+                                        class="form-control has-value"
+                                        required="required"
+                                        value="1"
+                                        min="1"
+                                        pattern="^\d+$"
+                                        oninput="handleNumOfPeople()"
+                                    />
+                                    <span class="error"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-7 col-sm-7 col-xs-12"></div>
+                        </div>
+                    </div>
+                    <div class="title">
+                        <h3>PHƯƠNG THỨC THANH TOÁN</h3>
+                    </div>
+                    <p><b style="font-size: 1.4rem">Chọn một trong các phương thức sau:</b></p>
+                    <div class="methods">
+                        <!-- <div class="method" data-payment-type="offline">
+                            <input
+                                value="offline"
+                                style="display: none"
+                                type="radio"
+                                id="pament-method3"
+                                data-fee="0"
+                                class="payment-method"
+                                name="paymentMethod"
+                            />
+                            <div class="method-content">
+                                <label class="title" toggle="Cash" for="pament-method3">
+                                    <h4 style="margin: 0 0 10px">Thanh toán bằng tiền mặt tại văn phòng</h4>
+                                    <div class="description">
+                                        Quý khách vui lòng đến các văn phòng để thanh toán và nhận vé.
+                                    </div>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-check"></i>
+                                </label>
+                                <div class="content" id="Cash">
+                                    <h3 class="mt-2 mb-2">VĂN PHÒNG LỮ HÀNH</h3>
+
+                                    <div class="content">
+                                        <strong>Địa chỉ:</strong> 45 Lê Thánh Tôn, phường Bến Nghé, quận 1, TP.HCM<br />
+                                        <strong>Điện thoại:</strong> 1900 1808<br />
+                                        <strong>Email:</strong>&nbsp;<a href="mailto:info@saigontourist.net"
+                                            >info@saigontourist.net</a
+                                        ><br />
+                                    </div>
+
+                                    <div class="content">&nbsp;</div>
+
+                                    <div class="content">
+                                        Quý khách vui lòng đến
+                                        <a href="http://www.saigontourist.net/chi-nhanh">các văn phòng Saigontourist</a>
+                                        để thanh toán và nhận vé.
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="method" data-payment-type="online">
+                            <input
+                                value="online"
+                                style="display: none"
+                                type="radio"
+                                id="pament-method5"
+                                data-fee="0"
+                                class="payment-method"
+                                name="paymentMethod"
+                            />
+                            <div class="method-content">
+                                <label class="title" toggle="Momo" for="pament-method5">
+                                    <h4 style="margin: 0 0 10px">Thanh toán bằng ví điện tử VNPay</h4>
+                                    <div class="description" style="display: unset">
+                                        Hạn mức tối đa là 20.000.000 VND. Sau khi đặt vé và thanh toán thành công, Chúng
+                                        tôi sẽ gửi vé điện tử của Quý khách qua email.
+                                    </div>
+                                    <i class="fa fa-chevron-down"></i>
+                                    <i class="fa fa-check"></i>
+                                </label>
+                                <div class="content" id="Momo">
+                                    <p>Chúng tôi chấp nhận thanh toán bằng Ví điện tử VNPay.</p>
+
+                                    <p><b>(*) Hạn mức tối đa là 20.000.000 VND</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="title">
+                            <h3>THÔNG TIN LIÊN HỆ</h3>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Tên (*)</label>
+                                    <input
+                                        type="text"
+                                        name="contactInfo[name]"
+                                        placeholder=""
+                                        value=""
+                                        class="form-control"
+                                        required
+                                    />
+                                    <span class="error"></span>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Số điện thoại (*)</label>
+                                    <input
+                                        type="text"
+                                        name="contactInfo[mobilePhone]"
+                                        placeholder=""
+                                        value=""
+                                        class="form-control"
+                                        required
+                                    />
+                                    <span class="error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Email (*)</label>
+                                    <input
+                                        type="email"
+                                        name="contactInfo[email]"
+                                        placeholder=""
+                                        value=""
+                                        class="form-control"
+                                        required
+                                    />
+                                    <span class="error"></span>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Địa chỉ (*)</label>
+                                    <input
+                                        type="text"
+                                        name="contactInfo[address]"
+                                        placeholder=""
+                                        value=""
+                                        class="form-control"
+                                        required="required"
+                                        data-validation="required"
+                                    />
+                                    <span class="error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="buttonArea galleryBtnArea">
+                            <button
+                                id="btnBooking"
+                                class="btn btn-lg btn-outline-primary w-100"
+                                style="height: 40px"
+                                type="button"
+                                onclick="handleSubmitForm()"
+                            >
+                                Thanh toán
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="bookDetailsInfo">
+                <img class="w-100" src="<%= tour.placeData.img %>" alt="image" style="height: 333px" />
+                <div class="infoArea">
+                    <h3 class="mb-4">
+                        <a target="_blank" href="/api/tour/get-tour/<%= tour.name %>"><%= tour.name%></a>
+                    </h3>
+                    <ul class="mb-4 list-unstyled">
+                        <li>
+                            <i class="fa fa-barcode me-2" aria-hidden="true"></i>Code:
+                            <span class="tour-id"><%= tour._id%></span>
+                        </li>
+                        <li>
+                            <i class="fa fa-calendar-minus me-2" aria-hidden="true"></i>Ngày đi:
+                            <span><%= tour.dateGo %></span>
+                        </li>
+                        <li>
+                            <i class="fa fa-calendar-plus me-2" aria-hidden="true"></i>Ngày về:
+                            <span><%= tour.dateBack %></span>
+                        </li>
+                        <li>
+                            <i class="fa fa-calendar me-2" aria-hidden="true"></i>Thời gian:
+                            <span><%= tour.duration %></span>
+                        </li>
+                        <li id="liAdult" class="display-hidden" style="display: list-item">
+                            <i class="fa fa-user-secret me-2" aria-hidden="true"></i>Giá:
+                            <span><strong><%= tour.price %></strong> đ</span
+                            ><span id="adult" data-price="<%= tour.price %>"> x 1</span>
+                        </li>
+                    </ul>
+                    <div class="priceTotal">
+                        <h2>
+                            Tổng: <span id="totalPrice" name="totalPrice"> <%= tour.price %></span>
+                            <span
+                                style="
+                                    font-size: 16px;
+                                    color: #000;
+                                    font-weight: 500;
+                                    line-height: 21px;
+                                    text-transform: lowercase;
+                                "
+                            >
+                                đ</span
+                            >
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const numOfPeople = document.querySelector('#numOfPeople');
+    const adult = document.querySelector('#adult');
+    const priceStr = adult.getAttribute('data-price');
+    const price = parseInt(priceStr.replace(/\,/g, ''));
+    const totalPrice = document.querySelector('#totalPrice');
+    const bookingForm = document.querySelector('#info-form');
+    const tourId = document.querySelector('.tour-id').innerText;
+    const data = new FormData();
+    const btnBooking = document.querySelector('#btnBooking');
+
+    function handleNumOfPeople() {
+        numOfPeople.value = numOfPeople.value;
+        adult.innerText = ' x ' + numOfPeople.value;
+        calcTotalPrice(price);
+    }
+    function calcTotalPrice(price) {
+        const total = price * numOfPeople.value;
+        totalPrice.innerText = total.toLocaleString('en-US', { useGrouping: true });
+    }
+    function handleSubmitForm() {
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+        if (!paymentMethod) {
+            alert('Vui lòng chọn phương thức thanh toán');
+            return;
+        }
+        const contact = {
+            name: document.querySelector('input[name="contactInfo[name]"]').value,
+            mobilePhone: document.querySelector('input[name="contactInfo[mobilePhone]"]').value,
+            email: document.querySelector('input[name="contactInfo[email]"]').value,
+            address: document.querySelector('input[name="contactInfo[address]"]').value,
+        };
+        const data = {
+            contactInfo: contact,
+            paymentMethod: paymentMethod.value,
+            numOfPeople: numOfPeople.value,
+        };
+
+        fetch(`https://travel-web-ks0z.onrender.com/booking/book-tour/${tourId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(function (response) {
+                return response.json(); // Parse response as JSON
+            })
+            .then(function (dataBooking) {
+                console.log('dataBooking', dataBooking.booking);
+                if (dataBooking.status == 'ok') {
+                    const bookingId = dataBooking.booking._id;
+                    const amount = dataBooking.booking.totalPrice.replace(/,/g, '');
+                    window.location.href = `/api/payment/create_payment_url?orderId=${bookingId}&amount=${amount}`;
+                }
+            })
+            .catch(function (error) {
+                console.error('Lỗi khi gửi dữ liệu lên server:', error);
+            });
+    }
+</script>

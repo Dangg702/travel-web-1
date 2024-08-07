@@ -1,0 +1,185 @@
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">Places Data</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard">dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">create form</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="col-12" id="alert-container"></div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <form id="search-place" class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                <input id="input-place" type="text" class="form-control" placeholder="Search place" />
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body" class="result-container">
+                    <h4 class="card-title">Data Table</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="form-check form-check-muted m-0">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" />
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Region</th>
+                                    <th>Is famous</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% places.forEach((place, index) => { %>
+                                <tr>
+                                    <td>
+                                        <div class="form-check form-check-muted m-0">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" />
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <img src="<%= place.img %>" alt="image" />
+                                    </td>
+                                    <td><%= place.name %></td>
+                                    <td><%= place.region %></td>
+                                    <td><%= place.isFamous %></td>
+                                    <td>
+                                        <a
+                                            href="https://travel-web-ks0z.onrender.com/api/place/edit-place/<%= place.id %>"
+                                            class="btn btn-outline-primary"
+                                            >Edit</a
+                                        >
+                                        <a
+                                            href="javascript:void(0);"
+                                            class="btn btn-outline-danger delete-place-link"
+                                            data-place-id="<%= place.id %>"
+                                            >Delete</a
+                                        >
+                                    </td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const searchForm = document.getElementById('search-place');
+    function displaySearchResults(results) {
+        const searchResultsContainer = document.querySelector('.card-body');
+        searchResultsContainer.innerHTML = '';
+        if (results.length === 0) {
+            searchResultsContainer.innerHTML = `
+                <p>Place does not exists </p>
+            `;
+        } else {
+            searchResultsContainer.innerHTML = `
+            <h4 class="card-title">Search Result</h4>
+            <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Region</th>
+                                    <th>Is famous</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="tbody">
+                            </tbody>
+                        </table>
+                    </div>
+            `;
+            const tbody = document.querySelector('.tbody');
+            results.forEach((place) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>
+                    <img src="${place.img}" alt="image" />
+                    </td>
+                    <td>${place.name}</td>
+                    <td>${place.region}</td>
+                    <td>${place.isFamous}</td>
+                    <td>
+                        <a
+                            href="https://travel-web-ks0z.onrender.com/api/place/edit-place/${place.id}"
+                            class="btn btn-outline-primary"
+                            >Edit</a
+                        >
+                        <a
+                            href="javascript:void(0);"
+                            class="btn btn-outline-danger delete-place-link"
+                            data-place-id="${place.id}"
+                            >Delete</a
+                        >
+                </td>
+            `;
+                tbody.appendChild(row);
+            });
+        }
+    }
+    searchForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const searchInput = document.getElementById('input-place').value;
+        try {
+            const response = await fetch(`https://travel-web-ks0z.onrender.com/api/place/search-place/${searchInput}`);
+            const searchData = await response.json();
+            console.log(searchData.data);
+            if (response.ok) {
+                displaySearchResults(searchData.data);
+            } else {
+                const alertContainer = document.getElementById('alert-container');
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> Failed to search place ${searchInput}. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-place-link');
+        deleteButtons.forEach((button) => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const placeId = this.getAttribute('data-place-id'); // Lấy id từ data-place-id
+                fetch(`https://travel-web-ks0z.onrender.com/api/place/delete-place/${placeId}`, {
+                    method: 'DELETE',
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Failed to delete place');
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        // Load lại trang sau khi xóa thành công
+                        window.location.reload();
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+    });
+</script>

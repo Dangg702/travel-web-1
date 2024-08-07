@@ -1,0 +1,39 @@
+<!-- //Created by CTT -->
+
+<h3><%= title %></h3>
+<div class="table-responsive">
+  <form action="refund" method="POST">
+    <div class="form-group">
+      <label for="orderId">Mã giao dịch (vnp_TxnRef):</label>
+      <input type="text" class="form-control" name="orderId" />
+    </div>
+    <div class="form-group">
+      <label for="amount">Số tiền hoàn:</label>
+      <input type="text" class="form-control" name="amount" />
+    </div>
+    <div class="form-group">
+      <label for="transType">Kiểu hoàn tiền (vnp_TransactionType):</label>
+      <select class="form-control" name="transType">
+        <option value="02">Hoàn toàn phần</option>
+        <option value="03">Hoàn một phần</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="transDate"
+        >Thời gian tạo giao dịch (vnp_TransactionDate):</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        name="transDate"
+        placeholder="yyyyMMddHHmmss"
+      />
+    </div>
+    <div class="form-group">
+      <label for="user">User thực hiện hoàn (vnp_CreateBy):</label>
+      <input type="text" class="form-control" name="user" />
+    </div>
+    <button type="submit" class="btn btn-default">Refund</button>
+  </form>
+</div>
+<p>&nbsp;</p>

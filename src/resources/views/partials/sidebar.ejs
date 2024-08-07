@@ -1,0 +1,22 @@
+<div class="card mb-3">
+    <div class="card-header fs-3 fw-bold">Địa điểm HOT</div>
+    <ul class="list-group list-group-flush">
+        <% if (hotPlaces && hotPlaces.length > 0) { %> <% hotPlaces.forEach(place => { %>
+        <li class="list-group-item">
+            <a href="https://travel-web-ks0z.onrender.com/api/tour/search-tours/<%= place %>"><%= place %></a>
+        </li>
+        <% }) %> <% } %>
+    </ul>
+</div>
+
+<div class="card">
+    <div class="card-header fs-3 fw-bold">Loại Tours</div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <a href="https://travel-web-ks0z.onrender.com/api/tour/tours-type/trọn gói">Trọn gói</a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://travel-web-ks0z.onrender.com/api/tour/tours-type/daily">Daily tours</a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,149 @@
+<div style="padding: 0 100px">
+    <div class="user-profile">
+        <img src="<%= user.avatar %>" alt="avatar" id="avatar" />
+        <p class="text-upload">
+            <label class="btn w-100" for="avatarInput"><a>Upload hình mới</a></label>
+            <input accept="image/*" id="avatarInput" style="visibility: hidden" type="file" />
+        </p>
+        <div id="confirmChangeAvatar"></div>
+    </div>
+    <div class="user-dashboard">
+        <form action="" id="user-form">
+            <div class="mb-3 row g-0">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input
+                        type="text"
+                        readonly
+                        class="form-control-plaintext"
+                        id="staticEmail"
+                        value="<%= user.email %>"
+                    />
+                </div>
+            </div>
+            <div class="mb-3 row g-0">
+                <label for="username" class="col-sm-2 col-form-label">Username</label>
+                <div class="col-sm-10">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="username"
+                        name="username"
+                        value="<%= user.username %>"
+                    />
+                </div>
+            </div>
+            <div class="mb-3 row g-0">
+                <label for="fullName" class="col-sm-2 col-form-label">Tên đầy đủ</label>
+                <div class="col-sm-10">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="fullName"
+                        name="fullName"
+                        value="<%= user.fullName %>"
+                    />
+                </div>
+            </div>
+            <div class="mb-3 row g-0">
+                <label for="phone" class="col-sm-2 col-form-label">Số điện thoại</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="phone" name="phone" value="<%= user.phone %>" />
+                </div>
+            </div>
+            <div class="mb-3 row g-0 flex-row-reverse">
+                <button
+                    type="button"
+                    onclick="handleUpdateUser('<%- user._id %>')"
+                    class="col-sm-10 btn btn-lg btn-change"
+                >
+                    Lưu thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const avatarInput = document.getElementById('avatarInput');
+    const previewImage = document.getElementById('avatar');
+    const confirmChangeAvatar = document.getElementById('confirmChangeAvatar');
+
+    avatarInput.addEventListener('change', (event) => {
+        confirmChangeAvatar.innerHTML = `
+    <a href="https://travel-web-ks0z.onrender.com/user/account/<%- user._id %>" type="button" class="btn btn-lg btn-outline-danger btn-custom">Hủy</a>
+    <button onclick="uploadCloud('<%- user._id %>')" type="button" class="btn btn-lg btn-outline-primary btn-custom">Lưu</button>
+  `;
+
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImage.src = e.target.result;
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+    async function uploadCloud(userId) {
+        const avatar = document.getElementById('avatarInput').files[0];
+        const formData = new FormData();
+        formData.append('image', avatar);
+        try {
+            const cloudinaryResponse = await fetch('/api/up/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const cloudinaryData = await cloudinaryResponse.json();
+            const response = await fetch(`/api/user/update-user/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    avatar: cloudinaryData.url,
+                }),
+            });
+            if (response.ok) {
+                alert('Update successfully');
+                window.location.href = '/user/account/' + userId;
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update user');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('An error occurred while updating the user. Please try again later.');
+        }
+    }
+    async function handleUpdateUser(userId) {
+        try {
+            const { value: username } = document.getElementById('username');
+            const { value: fullName } = document.getElementById('fullName');
+            const { value: phone } = document.getElementById('phone');
+
+            const response = await fetch(`/api/user/update-user/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    fullName,
+                    phone,
+                }),
+            });
+
+            if (response.ok) {
+                alert('Update successfully');
+                window.location.href = '/user/account/' + userId;
+            } else {
+                // Handle the error case
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update user');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('An error occurred while updating the user. Please try again later.');
+        }
+    }
+</script>

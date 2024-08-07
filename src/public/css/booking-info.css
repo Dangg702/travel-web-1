@@ -1,0 +1,22 @@
+.booking-item-body p {
+  line-height: 1.5;
+  font-size: 1.8rem; }
+
+.booking-item-body .card-title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 12px; }
+
+.card-title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 1.6rem;
+  color: #035755; }
+
+.tour-status {
+  font-size: 1.8rem; }
+
+.btn-cancel-tour {
+  padding: 4px 28px;
+  font-size: 1.6rem;
+  border-radius: 5px; }

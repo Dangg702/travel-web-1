@@ -1,0 +1,17 @@
+<%- include('./header.ejs') %>
+<div class="wrapper">
+    <%- include('../partials/header.ejs') %>
+    <div class="layout-sidebar">
+        <div class="search-container"><%- include('../partials/searchForm.ejs') %></div>
+        <div class="col-xs-12 mt-5 pb-5 content-wrapper">
+            <div class="row">
+                <div class="col-xs-12 col-md-9 order-md-2">
+                    <div><%- body %></div>
+                </div>
+                <div class="col-xs-12 col-md-3 order-md-1"><%- include('../partials/sidebar.ejs') %></div>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</div>
+<%- include('./footer.ejs') %>

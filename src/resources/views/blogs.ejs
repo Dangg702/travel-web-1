@@ -1,0 +1,34 @@
+<% if (blogs && blogs.length>0) { %> <% blogs.forEach((blog,index) => { %>
+<article class="news__list__item card card-full hover-a pt-5 pb-5">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="news__list__item__image-wrapper">
+                <a href="/blogs/<%=blog.title%>"
+                    ><img
+                        src="<%= blog.imgUrl %>"
+                        class="img-responsive pic-news-l"
+                        loading="lazy"
+                        alt="<%=blog.title%>"
+                /></a>
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-12">
+            <div class="card-body">
+                <h2 class="card-title h2 h3-sm h2-md fw-bold mb-3">
+                    <a title="<%=blog.title%>" class="dot-dot cut-name" href="/blogs/<%=blog.title%>">
+                        <%=blog.title%></a
+                    >
+                </h2>
+                <div class="card-text mb-2 text-muted small mb-3">
+                    <span class="d-none d-sm-inline me-1"
+                        ><span class="news__new-thread__category fw-bold active">Tin du lịch</span> - 09/04/2024</span
+                    ><time datetime=""> </time>
+                </div>
+                <p class="card-text"><%=blog.desc %></p>
+            </div>
+        </div>
+    </div>
+</article>
+<% }) %> <% } else { %>
+<p>Không có bài viết nào</p>
+<% }%>

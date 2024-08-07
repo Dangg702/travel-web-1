@@ -1,0 +1,61 @@
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title">Edit User</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/dashboard">dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">edit user</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="col-12" id="alert-container"></div>
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Edit user <%= user.username %></h4>
+                    <form
+                        class="edit-user-form"
+                        id="edit-user-form"
+                        action="https://travel-web-ks0z.onrender.com/api/user/update-user/<%= user._id %>?_method=PUT"
+                        method="post"
+                    >
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="username"
+                                name="username"
+                                value="<%= user.username %>"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label class="me-5" for="isAdmin">Is Admin</label>
+                            <% if (user.isAdmin) { %>
+                            <label class="me-3">
+                                <input type="radio" name="isAdmin" value="true" checked />
+                                True
+                            </label>
+                            <label class="me-3">
+                                <input type="radio" name="isAdmin" value="false" />
+                                False
+                            </label>
+                            <% } else { %>
+                            <label class="me-3">
+                                <input type="radio" name="isAdmin" value="true" />
+                                True
+                            </label class="me-3">
+                            <label>
+                                <input type="radio" name="isAdmin" value="false" checked />
+                                False
+                            </label>
+                            <% } %>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

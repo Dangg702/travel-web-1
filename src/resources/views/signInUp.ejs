@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Double Slider Registration And Login Page</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link rel="stylesheet" type="text/css" href="/css/signInUp.css" />
+    </head>
+    <body>
+        <div class="container" id="container">
+            <div class="form-container register-container">
+                <form action="/user/register" method="post" id="register-form">
+                    <h1>Register hire.</h1>
+                    <div class="form-group">
+                        <input type="text" rules="required" placeholder="Username" id="username" name="username" />
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" rules="required|email" placeholder="Email" id="email" name="email" />
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input
+                            type="password"
+                            rules="required|min:6"
+                            placeholder="Password"
+                            id="password"
+                            name="password"
+                        />
+                        <span class="error-message"></span>
+                    </div>
+                    <button type="submit">Register</button>
+                    <span>or use your account</span>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="social-icon fa-brands fa-facebook"></i></a>
+                        <a href="#" class="social"><i class="social-icon fa-brands fa-google"></i></a>
+                        <a href="#" class="social"><i class="social-icon fa-brands fa-instagram"></i></a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="form-container login-container">
+                <form action="/user/login" method="post" id="login-form">
+                    <h1>Login hire.</h1>
+                    <div class="form-group">
+                        <input type="email" rules="required|email" placeholder="Email" id="email" name="email" />
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" rules="required" placeholder="Password" id="password" name="password" />
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="content">
+                        <div class="checkbox">
+                            <input type="checkbox" name="checkbox" id="checkbox" />
+                            <label for="checkbox">Remember me</label>
+                        </div>
+                        <div class="pass-link">
+                            <a href="#">Forgot password?</a>
+                        </div>
+                    </div>
+                    <span id="error-message" style="color: red">*</span>
+                    <button type="submit">Login</button>
+                    <span>or use your account</span>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="social-icon fa-brands fa-facebook"></i></a>
+                        <a href="#" class="social"><i class="social-icon fa-brands fa-google"></i></a>
+                        <a href="#" class="social"><i class="social-icon fa-brands fa-instagram"></i></a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1 class="title">Hello <br />friends</h1>
+                        <p>If you have an account, login here and have fun</p>
+                        <button class="ghost" id="login">
+                            Login
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1 class="title">
+                            Start your <br />
+                            journey now
+                        </h1>
+                        <p>If you don't have an account yet, join us and start your journey</p>
+                        <button class="ghost" id="register">
+                            Register
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/js/signInUp.js"></script>
+        <script>
+            // Tạo hàm gửi yêu cầu AJAX
+            function sendRequest(url, data) {
+                return fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+            }
+
+            function handleRegister(data) {
+                sendRequest('/user/register', data)
+                    .then((response) => {
+                        if (response.status === 200) {
+                            return sendRequest('/user/login', data);
+                        }
+                    })
+                    .then((response) => {
+                        if (response.status === 200) {
+                            window.location.href = '/';
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            function handleLogin(data) {
+                sendRequest('/user/login', data)
+                    .then((response) => {
+                        console.log(response);
+                        if (response.status === 200) {
+                            // Kiểm tra dữ liệu trả về từ API
+                            response.json().then((data) => {
+                                if (data.isLogin) {
+                                    if (data.isAdmin) {
+                                        window.location.href = '/dashboard';
+                                    } else {
+                                        // Đăng nhập thành công, chuyển hướng sang trang chủ
+                                        window.location.href = '/';
+                                    }
+                                } else {
+                                    // Hiển thị thông báo không thành công và yêu cầu nhập lại
+                                    const errorMessageSpan = document.getElementById('error-message');
+                                    errorMessageSpan.textContent =
+                                        'Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập.';
+                                }
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            // Khai báo đối tượng Validator và xử lý sự kiện onSubmit
+            var registerForm = new Validator('#register-form');
+            registerForm.onSubmit = handleRegister;
+
+            var loginForm = new Validator('#login-form');
+            loginForm.onSubmit = handleLogin;
+        </script>
+    </body>
+</html>

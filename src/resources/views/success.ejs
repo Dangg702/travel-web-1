@@ -1,0 +1,45 @@
+<!-- //-    Created by vinhnt on 6/16/2017. -->
+
+<% if (code === "00") { %>
+<p id="payment-success" style="text-align: center" data-booking="<%= bookingId %>">GD thành công</p>
+<% } else { %>
+<p id="payment-fail" style="text-align: center; color: red" data-booking="<%= bookingId %>">GD thất bại</p>
+<% } %>
+<p style="text-align: center">
+    <a class="btn btn-default" href="/">Về trang chủ</a>
+</p>
+
+<script>
+    const paymentSuccess = document.getElementById('payment-success');
+    const paymentFail = document.getElementById('payment-fail');
+    const bookingId = paymentSuccess
+        ? paymentSuccess.getAttribute('data-booking')
+        : paymentFail.getAttribute('data-booking');
+    if (paymentSuccess) {
+        fetch(`/booking/update/${bookingId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                isPaid: 'true',
+                status: 'success',
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {});
+    } else if (paymentFail) {
+        fetch(`/booking/update/${bookingId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                isPaid: 'false',
+                status: 'failed',
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {});
+    }
+</script>
